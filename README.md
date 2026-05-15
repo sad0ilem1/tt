@@ -18,16 +18,16 @@ O projeto foi desenvolvido em **Java**. Para testar, basta compilar e rodar no t
 
 ## Relatório de Desempenho
 
-### 1. FCFS (First-Come, First-Served)
+### 1. FCFS (First-Come, First Served)
 Algoritmo que executa os processos estritamente por ordem de chegada.
-- **Análise:** Foi o modelo mais simples, mas sofreu com o "efeito comboio" nos processos maiores. Manteve uma vazão constante de 0.50 processos/10 u.t., porém o tempo de espera médio (14.0) ficou bem acima do que vimos no SRTF.
+- **Análise:** Foi o modelo mais simples, mas sofreu com o gargalo da fila nos processos maiores. Manteve uma vazão constante de 0.50 processos/10 u.t., porém o tempo de espera médio (14.0) ficou bem acima do que vimos no SRTF.
 
 ### 2. SRTF (Shortest Remaining Time First)
 Algoritmo  que sempre prioriza o processo com o menor tempo de CPU restante.
-- **Análise:** Teve o melhor desempenho geral de tempo. Ele conseguiu zerar a espera dos processos mais rápidos (103 e 104) interrompendo a tarefa mais longa. Com isso, entregou a menor média de espera (11.67) e de turnaround (33.33), sofrendo apenas uma leve queda na vazão do sistema (0.43).
+- **Análise:** Teve o melhor desempenho geral de tempo. Ele conseguiu zerar a espera dos processos mais rápidos interrompendo a tarefa mais longa. Com isso, entregou a menor média de espera (11.67) e de turnaround (33.33), sofrendo apenas uma leve queda na vazão do sistema (0.43).
 
 ### 3. Round-Robin (Quantum por Predição)
-Escalonamento  onde o quantum varia dinamicamente usando a **Média Exponencial** (α = 0.5) para prever o próximo surto de CPU.
+Algoritmo onde o quantum varia dinamicamente usando a **Média Exponencial** (α = 0.5) para prever o próximo surto de CPU.
 - **Análise:** Acabou gerando os maiores tempos médios de espera (19.67) e turnaround (41.33). Como o quantum se ajusta o tempo todo, os processos ficam "competindo" mais pela CPU e acabam avançando juntos na fila. Isso faz com que demorem mais tempo total para finalizar individualmente no cenário que testamos.
 
 ### 4. Multilevel Queue (MLQ)
