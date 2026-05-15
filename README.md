@@ -1,7 +1,8 @@
 # Simulador de Escalonamento de CPU
 
 Trabalho Prático 1 da disciplina de Sistemas Operacionais. O projeto é um simulador feito para comparar o desempenho de diferentes algoritmos de escalonamento de processos, avaliando o tempo de espera, tempo de retorno e vazão.
-
+## Pré-requisitos
+- Java 25 ou superior
 ## Como executar
 
 O projeto foi desenvolvido em **Java**. Para testar, basta compilar e rodar no terminal:
