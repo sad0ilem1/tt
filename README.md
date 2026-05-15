@@ -1,240 +1,58 @@
-Atividade 1 **Acessar Dashboard do Funcionário**
-| **Campo** | **Tipo** | **Restrições** | **Valor default** |
-| --- | --- | --- | --- |
-| Saldo atual | Número | Somente leitura | — |
-| Benefícios disponíveis | Número | Somente leitura | — |
-| Resgates realizados | Número | Somente leitura | — |
-| Últimos Resgates | Tabela | Somente leitura; colunas: Benefício, Pontos, Status, Data | — |
- 
-| **Comandos** | **Destino** | **Tipo** |
-| --- | --- | --- |
-| Ver Loja de Benefícios | Acessar Loja de Benefícios | default |
-| Ver Meus Resgates | Acessar Meus Resgates | default |
- 
-![Dashboard Funcionário](images/processo5-wireframes/dashboard-funcionario.jpeg "Wireframe do Dashboard do Funcionário")
- 
+# Simulador de Escalonamento de CPU - TP1 (Sistemas Operacionais)
+
+Este projeto consiste na implementação de um simulador de escalonamento para a disciplina de Sistemas Operacionais. O objetivo principal é comparar como diferentes políticas de gerenciamento de processos impactam a eficiência do sistema, analisando métricas como tempo de espera, turnaround e vazão.
+
+## 🚀 Como Compilar e Executar
+
+O simulador foi desenvolvido em **Java**. Certifique-se de que o seu ambiente (JDK) está configurado corretamente.
+
+1. **Compilação:**
+   No terminal, dentro da pasta do projeto, compile os arquivos `.java`:
+   
+   `javac App.java`
+
+2. **Execução:**
+   Para rodar o simulador, chame a classe principal passando o arquivo de processos como argumento:
+   
+   `java App processos.txt`
+   
+   *Nota: O arquivo `processos.txt` deve estar presente no diretório raiz para que o simulador consiga ler os dados de entrada.*
+
 ---
- 
-Atividade 2 **Acessar Loja de Benefícios**
-| **Campo** | **Tipo** | **Restrições** | **Valor default** |
-| --- | --- | --- | --- |
-| Saldo atual | Número | Somente leitura | — |
-| Buscar benefício | Caixa de texto | Opcional | — |
-| Benefícios | Tabela | Somente leitura; colunas: Benefício, Custo, Descrição, Ação | — |
- 
-| **Comandos** | **Destino** | **Tipo** |
-| --- | --- | --- |
-| Buscar | Acessar Loja de Benefícios | default |
-| Ver | Ver Detalhes do Benefício | default |
- 
-![Loja de Benefícios](images/processo5-wireframes/loja-beneficios-funcionario.jpeg "Wireframe da Loja de Benefícios")
- 
+
+## 📊 Análise dos Algoritmos e Resultados
+
+Abaixo, apresento uma análise de como cada política de escalonamento se comportou durante os testes realizados.
+
+### 1. FCFS (First-Come, First-Served)
+Este é o modelo mais simples de escalonamento não-preemptivo: quem chega primeiro, assume o controle da CPU. 
+* **Observação:** O algoritmo é previsível, mas sofre com o "efeito comboio" se um processo longo chegar primeiro. No teste, ele manteve uma vazão de **0.50 processos/10 u.t.**, mas o tempo de espera médio (**14.00**) foi consideravelmente maior que o do SRTF.
+
+### 2. SRTF (Shortest Remaining Time First)
+Uma variante preemptiva do SJF que foca no processo que terminará mais rápido.
+* **Observação:** Foi o grande vencedor em termos de responsividade. Ele conseguiu zerar o tempo de espera de processos menores (103 e 104) ao interromper tarefas mais longas. É o algoritmo mais eficiente para reduzir a média de espera (**11.67**), embora a preempção constante possa reduzir levemente a vazão total do sistema (**0.43**).
+
+### 3. Round-Robin com Quantum por Predição
+Aqui, o diferencial é o escalonamento circular com ajuste dinâmico do quantum usando a **Média Exponencial** (α = 0.5). O sistema prevê a duração do próximo surto de CPU através da fórmula: `tau_n+1 = alpha * t_n + (1 - alpha) * tau_n`.
+* **Observação:** Apresentou as métricas de tempo mais elevadas. Isso acontece porque a alternância constante e o ajuste do quantum fazem com que os processos "andem juntos" na fila de prontos, demorando mais para que qualquer um deles seja totalmente concluído individualmente nesta massa de dados. O tempo de espera médio foi de **19.67**.
+
+### 4. Multilevel Queue (MLQ)
+* **Status:** Pendente.
+* **Lógica:** Implementação de duas filas estáticas. A Fila 1 (Alta Prioridade) utiliza Round-Robin (quantum fixo), e a Fila 2 (Baixa Prioridade) utiliza FCFS. Processos na Fila 2 só executam se a Fila 1 estiver vazia.
+
 ---
- 
-Atividade 3 **Ver Detalhes do Benefício**
-| **Campo** | **Tipo** | **Restrições** | **Valor default** |
-| --- | --- | --- | --- |
-| Nome | Texto | Somente leitura | — |
-| Custo | Número | Somente leitura | — |
-| Seu saldo | Número | Somente leitura | — |
-| Precisa aprovação do RH | Texto | Somente leitura | — |
-| Descrição | Texto | Somente leitura | — |
- 
-| **Comandos** | **Destino** | **Tipo** |
-| --- | --- | --- |
-| Confirmar Resgate | Resgatar Benefício | default |
-| Voltar | Acessar Loja de Benefícios | default |
- 
-![Detalhes do Benefício](images/processo5-wireframes/detalhes-beneficio-funcionario.jpeg "Wireframe de Detalhes do Benefício do Funcionário")
- 
+
+## 📈 Comparativo de Métricas
+
+| Algoritmo | Espera Média | Turnaround Médio | Vazão (Proc / 10 u.t.) |
+| :--- | :---: | :---: | :---: |
+| **FCFS** | 14.00 | 35.67 | 0.50 |
+| **SRTF** | 11.67 | 33.33 | 0.43 |
+| **Round-Robin** | 19.67 | 41.33 | 0.50 |
+| **MLQ** | *Pendente* | *Pendente* | *Pendente* |
+
 ---
- 
-Atividade 4 **Acessar Meus Resgates**
-| **Campo** | **Tipo** | **Restrições** | **Valor default** |
-| --- | --- | --- | --- |
-| Total | Número | Somente leitura | — |
-| Status | Seleção única | Opcional; opções: Todos, Pendente, Aprovado, Resgatado | Todos |
-| Resgates | Tabela | Somente leitura; colunas: Benefício, Pontos usados, Status, Data, Detalhe | — |
- 
-| **Comandos** | **Destino** | **Tipo** |
-| --- | --- | --- |
-| Filtrar | Acessar Meus Resgates | default |
-| Ver | Ver Detalhes do Resgate | default |
- 
-![Meus Resgates](images/processo5-wireframes/meus-resgates-funcionario.jpeg "Wireframe de Meus Resgates do Funcionário")
- 
----
- 
-Atividade 5 **Ver Detalhes do Resgate**
-| **Campo** | **Tipo** | **Restrições** | **Valor default** |
-| --- | --- | --- | --- |
-| Nome do benefício | Texto | Somente leitura | — |
-| Pontos utilizados | Número | Somente leitura | — |
-| Data do resgate | Data | Somente leitura | — |
-| Status | Texto | Somente leitura | — |
-| Observação do RH | Texto | Somente leitura | — |
- 
-| **Comandos** | **Destino** | **Tipo** |
-| --- | --- | --- |
-| Voltar | Acessar Meus Resgates | default |
- 
-![Detalhes do Resgate Funcionário](images/processo5-wireframes/detalhes-resgate-funcionario.jpeg "Wireframe de Detalhes do Resgate do Funcionário")
- 
----
- 
-Atividade 6 **Acessar Dashboard do RH**
-| **Campo** | **Tipo** | **Restrições** | **Valor default** |
-| --- | --- | --- | --- |
-| Benefícios cadastrados | Número | Somente leitura | — |
-| Pontos distribuídos | Número | Somente leitura | — |
-| Resgates realizados | Número | Somente leitura | — |
-| Resgates pendentes | Número | Somente leitura | — |
- 
-| **Comandos** | **Destino** | **Tipo** |
-| --- | --- | --- |
-| Gerenciar Benefícios | Acessar Benefícios Cadastrados | default |
-| Gerenciar Pontuação de Funcionários | Acessar Pontuação de Funcionários | default |
-| Gerenciar Resgates | Acessar Resgates dos Funcionários | default |
-| Ver Histórico | Acessar Histórico de Pontos dos Funcionários | default |
- 
-![Dashboard RH](images/processo5-wireframes/dashboard-rh.jpeg "Wireframe do Dashboard do RH")
- 
----
- 
-Atividade 7 **Acessar Benefícios Cadastrados**
-| **Campo** | **Tipo** | **Restrições** | **Valor default** |
-| --- | --- | --- | --- |
-| Nome do benefício | Caixa de texto | Opcional | — |
-| Status | Seleção única | Opcional; opções: Todos, Ativo, Inativo | Todos |
-| Benefícios | Tabela | Somente leitura; colunas: Benefício, Custo, Status, Precisa aprovação, Ação | — |
- 
-| **Comandos** | **Destino** | **Tipo** |
-| --- | --- | --- |
-| Filtrar | Acessar Benefícios Cadastrados | default |
-| Cadastrar Benefício | Cadastrar Benefício | default |
-| Ver | Acessar Benefícios Cadastrados | default |
-| Editar | Editar Benefício | default |
-| Desativar | Acessar Benefícios Cadastrados | default |
- 
-![Gerenciar Benefícios RH](images/processo5-wireframes/gerenciar-beneficios-rh.jpeg "Wireframe de Gerenciar Benefícios do RH")
- 
----
- 
-Atividade 8 **Cadastrar Benefício**
-| **Campo** | **Tipo** | **Restrições** | **Valor default** |
-| --- | --- | --- | --- |
-| Nome do benefício | Caixa de texto | Obrigatório | — |
-| Custo em pontos | Número | Obrigatório | — |
-| Descrição | Área de texto | Obrigatório | — |
-| Status | Seleção única | Obrigatório; opções: Ativo, Inativo | Ativo |
-| Precisa aprovação? | Seleção única | Obrigatório; opções: Sim, Não | Sim |
- 
-| **Comandos** | **Destino** | **Tipo** |
-| --- | --- | --- |
-| Cadastrar | Fim do Processo 5 | default |
-| Cancelar | Acessar Benefícios Cadastrados | default |
- 
-![Cadastrar Benefício RH](images/processo5-wireframes/cadastrar-beneficio-rh.jpeg "Wireframe de Cadastrar Benefício do RH")
- 
----
- 
-Atividade 9 **Editar Benefício**
-| **Campo** | **Tipo** | **Restrições** | **Valor default** |
-| --- | --- | --- | --- |
-| Nome do benefício | Caixa de texto | Obrigatório | — |
-| Custo em pontos | Número | Obrigatório | — |
-| Descrição | Área de texto | Obrigatório | — |
-| Status | Seleção única | Obrigatório; opções: Ativo, Inativo | Ativo |
-| Precisa aprovação? | Seleção única | Obrigatório; opções: Sim, Não | Sim |
- 
-| **Comandos** | **Destino** | **Tipo** |
-| --- | --- | --- |
-| Salvar Alterações | Acessar Benefícios Cadastrados | default |
-| Cancelar | Acessar Benefícios Cadastrados | default |
- 
-![Editar Benefício RH](images/processo5-wireframes/editar-beneficio-rh.jpeg "Wireframe de Editar Benefício do RH")
- 
----
- 
-Atividade 10 **Acessar Pontuação de Funcionários**
-| **Campo** | **Tipo** | **Restrições** | **Valor default** |
-| --- | --- | --- | --- |
-| Funcionário | Caixa de texto | Obrigatório | — |
-| Tipo de movimentação | Seleção única | Obrigatório; opções: Adicionar pontos, Remover pontos | Adicionar pontos |
-| Quantidade de pontos | Número | Obrigatório | — |
-| Motivo | Seleção única | Obrigatório; opções: Bom desempenho, … | Bom desempenho |
-| Observação | Área de texto | Opcional | — |
- 
-| **Comandos** | **Destino** | **Tipo** |
-| --- | --- | --- |
-| Salvar Movimentação | Fim do Processo 5 | default |
- 
-![Pontuação de Funcionários RH](images/processo5-wireframes/pontuacao-funcionarios-rh.jpeg "Wireframe de Pontuação de Funcionários do RH")
- 
----
- 
-Atividade 11 **Acessar Resgates dos Funcionários**
-| **Campo** | **Tipo** | **Restrições** | **Valor default** |
-| --- | --- | --- | --- |
-| Status | Seleção única | Opcional; opções: Todos, Pendente, Aprovado, Resgatado | Todos |
-| Funcionário | Caixa de texto | Opcional | — |
-| Resgates | Tabela | Somente leitura; colunas: Funcionário, Benefício, Pontos usados, Status, Data, Ação | — |
- 
-| **Comandos** | **Destino** | **Tipo** |
-| --- | --- | --- |
-| Filtrar | Acessar Resgates dos Funcionários | default |
-| Ver | Ver Solicitação de Resgate | default |
- 
-![Resgates dos Funcionários RH](images/processo5-wireframes/resgate-funcionarios-rh.jpeg "Wireframe de Resgates dos Funcionários do RH")
- 
----
- 
-Atividade 12 **Ver Solicitação de Resgate**
-| **Campo** | **Tipo** | **Restrições** | **Valor default** |
-| --- | --- | --- | --- |
-| Funcionário | Texto | Somente leitura | — |
-| Benefício | Texto | Somente leitura | — |
-| Pontos utilizados | Número | Somente leitura | — |
-| Data da solicitação | Data | Somente leitura | — |
-| Status | Texto | Somente leitura | — |
-| Observação do RH | Área de texto | Opcional | — |
- 
-| **Comandos** | **Destino** | **Tipo** |
-| --- | --- | --- |
-| Aprovar | Aprovar Solicitação de Resgate do Funcionário | default |
-| Recusar | Recusar Solicitação de Resgate do Funcionário | default |
-| Voltar | Acessar Resgates dos Funcionários | default |
- 
-![Detalhes do Resgate RH](images/processo5-wireframes/detalhes-resgate-rh.jpeg "Wireframe de Detalhes do Resgate do RH")
- 
----
- 
-Atividade 13 **Acessar Histórico de Pontos dos Funcionários**
-| **Campo** | **Tipo** | **Restrições** | **Valor default** |
-| --- | --- | --- | --- |
-| Total de funcionários | Número | Somente leitura | — |
-| Funcionário | Caixa de texto | Opcional | — |
-| Funcionários | Tabela | Somente leitura; colunas: Funcionário, Cargo, Total de pontos, Último resgate, Histórico | — |
- 
-| **Comandos** | **Destino** | **Tipo** |
-| --- | --- | --- |
-| Filtrar | Acessar Histórico de Pontos dos Funcionários | default |
-| Visualizar | Acessar Histórico do Funcionário | default |
- 
----
- 
-Atividade 14 **Acessar Histórico do Funcionário**
-| **Campo** | **Tipo** | **Restrições** | **Valor default** |
-| --- | --- | --- | --- |
-| Nome do funcionário | Texto | Somente leitura | — |
-| Cargo | Texto | Somente leitura | — |
-| Total atual de pontos | Número | Somente leitura | — |
-| Resgates do Funcionário | Tabela | Somente leitura; colunas: Benefício, Pontos usados, Status, Data | — |
- 
-| **Comandos** | **Destino** | **Tipo** |
-| --- | --- | --- |
-| Voltar | Acessar Histórico de Pontos dos Funcionários | default |
- 
-![Histórico de Pontos dos Funcionários RH](images/processo5-wireframes/historico-pontuacao-rh.jpeg "Wireframe do Histórico de Pontos dos Funcionários do RH")
- 
-![Histórico do Funcionário RH](images/processo5-wireframes/historico-pontuacao-funcionarios-rh.jpeg "Wireframe do Histórico do Funcionário do RH")
+
+## 🛠️ Tecnologias Utilizadas
+* **Linguagem:** Java
+* **Conceitos Aplicados:** FCFS, SRTF, Round-Robin, MLQ, Previsão por Média Exponencial.
