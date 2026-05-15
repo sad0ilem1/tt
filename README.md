@@ -18,8 +18,6 @@ O projeto foi desenvolvido em **Java**. Para testar, basta compilar e rodar no t
 
 ## Relatório de Desempenho
 
-Baseado na execução do arquivo de teste fornecido, aqui estão as observações práticas sobre cada algoritmo:
-
 ### 1. FCFS (First-Come, First-Served)
 Algoritmo que executa os processos estritamente por ordem de chegada.
 - **Análise:** Foi o modelo mais simples, mas sofreu com o "efeito comboio" nos processos maiores. Manteve uma vazão constante de 0.50 processos/10 u.t., porém o tempo de espera médio (14.0) ficou bem acima do que vimos no SRTF.
