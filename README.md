@@ -8,10 +8,10 @@ Trabalho Prático 1 da disciplina de Sistemas Operacionais. O projeto é um simu
 O projeto foi desenvolvido em **Java**. Para testar, basta compilar e rodar no terminal:
 
 1. Compile o código:
-   `javac *.java`
-
+   `javac TP1-SO/src/*.java`
+   
 2. Execute passando o arquivo de processos:
-   `java App`
+   `java -cp TP1-SO/src App`
 
 
 ---
