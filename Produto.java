@@ -32,6 +32,7 @@ public abstract class Produto {
         this.descricao = descricao;
         this.precoCusto = precoCusto;
         this.margemLucro = margemLucro;
+        //teste comentario
     }
 
     /**
